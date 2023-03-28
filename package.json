@@ -3,13 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "start": "node ./index.js",
+    "start": "tsc && node ./build/index.js",
     "par-ou-impar": "node ./par-ou-impar.js",
     "pedra-papel-tesoura": "node ./pedra-papel-tesoura.js",
     "test": "echo \"Error: no test specified\" && exit 1"
-  }, 
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/elowuttke/labecommerce-backend.git"
@@ -20,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/elowuttke/labecommerce-backend/issues"
   },
-  "homepage": "https://github.com/elowuttke/labecommerce-backend#readme"
+  "homepage": "https://github.com/elowuttke/labecommerce-backend#readme",
+  "devDependencies": {
+    "typescript": "^5.0.2"
+  }
 }
