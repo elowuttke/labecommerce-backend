@@ -28,6 +28,13 @@ app.get('/users', (req: Request, res: Response) => {
     res.status(200).send(users)
 })
 
+// GET USER PURCHASES BY USER ID
+app.get('/users/:id/purchases', (req: Request, res: Response) => {
+    const id = req.params.id
+    const result = purchases.filter((purchase) => purchase.userId === id)
+    res.status(200).send(result)
+})
+
 // GET ALL PRODUCTS
 app.get('/products', (req: Request, res: Response) => {
     res.status(200).send(products)
@@ -39,6 +46,13 @@ app.get('/product/search', (req: Request, res: Response) => {
     const result = products.filter((product) => {
         return product.name.toLowerCase().includes(q.toLowerCase())
     })
+    res.status(200).send(result)
+})
+
+//GET PRODUCT BY ID
+app.get('/products/:id', (req: Request, res: Response) => {
+    const id = req.params.id
+    const result = products.find((product) => product.id === id)
     res.status(200).send(result)
 })
 
@@ -81,4 +95,52 @@ app.post('/purchases', (req: Request, res: Response) => {
     console.log(purchases)
 
     res.status(201).send('Compra realizada com sucesso')
+})
+
+// PUT USER BY ID
+app.put('/users/:id', (req: Request, res: Response) => {
+    const id = req.params.id
+
+    const newEmail = req.body.email as string | undefined
+    const newPassword = req.body.password as string | undefined
+
+    const userToEdit = users.find((user) => user.id === id)
+
+    if (userToEdit) {
+        userToEdit.email = newEmail || userToEdit.email
+        userToEdit.password = newPassword || userToEdit.password
+    }
+    //console.log(users)
+    res.status(200).send('Cadatro  atualizado com sucesso')
+})
+
+// PUT PRODUCT BY ID
+app.put('/products/:id', (req: Request, res: Response) => {
+    const id = req.params.id
+
+    const newName = req.body.name as string | undefined
+    const newPrice = req.body.price as number
+    const newCategory = req.body.category as CATEGORY | undefined
+
+    const productToEdit = products.find((product) => product.id === id)
+
+    if (productToEdit) {
+        productToEdit.name = newName || productToEdit.name
+        productToEdit.price = isNaN(newPrice) ? productToEdit.price : newPrice
+        productToEdit.category = newCategory || productToEdit.category
+    }
+    //console.log(products)
+    res.status(200).send('Produto atualizado com sucesso')
+})
+
+// DELETE USER BY ID
+app.delete('/users/:id', (req: Request, res: Response) => {
+    const id = req.params.id
+    const userIndex = users.findIndex((user) => user.id === id)
+
+    if (userIndex >= 0) {
+        users.splice(userIndex, 1)
+    }
+    //console.log(users)
+    res.status(200).send('User apagado com sucesso')
 })
