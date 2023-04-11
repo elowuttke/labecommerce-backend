@@ -28,22 +28,6 @@ export const users: TUser[] = [
     }
 ];
 
-const getAllUsers = () => console.log(users)
-
-export const createUser = (id: string, email: string, password: string) => {
-    const newUser: TUser = {
-        id,
-        email,
-        password
-    }
-    console.log("Cadastro realizado com sucesso")
-    users.push(newUser)
-    getAllUsers()
-}
-
-//createUser("1006", "felix@labenu.com", "678901")
-
-
 export const products: TProduct[] = [
     {
         id: "2001",
@@ -77,21 +61,6 @@ export const products: TProduct[] = [
     },
 ]
 
-export const getAllProducts = () => console.log(products)
-
-export const createProduct = (id: string, name: string, price: number, category: CATEGORY) => {
-    const newProduct: TProduct = {
-        id,
-        name,
-        price,
-        category
-    }
-    console.log("Produto criado com sucesso")
-    products.push(newProduct)
-    getAllProducts()
-}
-//createProduct("2006", "Fita k7", 15, CATEGORY.ELETRONICS)
-
 export const getProductById = (idToSearch: string) => {
     const result = products.find((product) => product.id === idToSearch)
     if (!result) {
@@ -100,7 +69,6 @@ export const getProductById = (idToSearch: string) => {
         console.log(result)
     }
 }
-//getProductById("2004")
 
 export const purchases: TPurchase[] = [
     {
