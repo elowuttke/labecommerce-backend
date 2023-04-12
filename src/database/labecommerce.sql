@@ -156,22 +156,84 @@ SET
 WHERE id = "2002";
 
 -- Get All Users
+
 -- retorna o resultado ordenado pela coluna email em ordem crescente
-SELECT * FROM users
-ORDER BY email ASC;
+
+SELECT * FROM users ORDER BY email ASC;
 
 -- Get All Products versão 1
--- retorna o resultado ordenado pela coluna price em ordem crescente
--- limite o resultado em 20 iniciando pelo primeiro item
-SELECT * FROM products
-ORDER BY price ASC
-LIMIT 20
-OFFSET 0;
 
+-- retorna o resultado ordenado pela coluna price em ordem crescente
+
+-- limite o resultado em 20 iniciando pelo primeiro item
+
+SELECT * FROM products ORDER BY price ASC LIMIT 20 OFFSET 0;
 
 -- Get All Products versão 2
+
 -- seleção de um intervalo de preços, por exemplo entre 100.00 e 300.00
+
 -- retorna os produtos com preços dentro do intervalo definido em ordem crescente
-SELECT * FROM products
+
+SELECT *
+FROM products
 WHERE price BETWEEN 100 AND 300
 ORDER BY price ASC;
+
+-- Criação da tabela de pedidos
+
+-- nome da tabela: purchases
+
+-- colunas da tabela:
+
+-- id (TEXT, PK, único e obrigatório)
+
+-- total_price (REAL e obrigatório)
+
+-- paid (INTEGER e obrigatório)
+
+-- created_at (TEXT e opcional)
+
+-- buyer_id (TEXT, obrigatório e FK = referencia a coluna id da tabela users)
+
+CREATE TABLE
+    purchases(
+        id TEXT PRIMARY KEY UNIQUE NOT NULL,
+        total_price REAL NOT NULL,
+        paid INTEGER NOT NULL,
+        --0 para false (não pago), e 1 para true (pago)
+        created_at TEXT,
+        buyer_id TEXT NOT NULL,
+        FOREIGN KEY (buyer_id) REFERENCES users(id)
+    );
+
+-- Crie dois pedidos para cada usuário cadastrado
+
+-- No mínimo 4 no total (ou seja, pelo menos 2 usuários diferentes) e devem iniciar com a data de entrega nula.
+
+INSERT INTO
+    purchases (id, total_price, paid, buyer_id)
+VALUES ("3001", 720, 0, "1001"), ("3002", 40, 0, "1002"), ("3003", 150, 0, "1004"), ("3004", 150, 0, "1003"), ("3005", 590, 0, "1003"), ("3006", 350, 0, "1002");
+
+SELECT * FROM purchases;
+
+DROP TABLE purchases;
+
+-- b) Edite o status da data de entrega de um pedido
+
+-- Simule que o pedido foi entregue no exato momento da sua edição (ou seja, data atual).
+
+UPDATE purchases SET created_at = DATETIME('now') WHERE id = "3001";
+
+-- Crie a query de consulta utilizando junção para simular um endpoint de histórico de compras de um determinado usuário.
+
+-- Mocke um valor para a id do comprador, ela deve ser uma das que foram utilizadas no exercício 2.
+
+SELECT
+    purchases.id AS purchaseId,
+    total_price,
+    paid,
+    buyer_id AS buyerId,
+    users.email
+FROM purchases
+    INNER JOIN users ON users.id = purchases.buyer_id;
