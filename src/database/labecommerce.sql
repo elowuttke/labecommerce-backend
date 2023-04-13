@@ -237,3 +237,54 @@ SELECT
     users.email
 FROM purchases
     INNER JOIN users ON users.id = purchases.buyer_id;
+
+-- Criação da tabela de relações
+
+-- nome da tabela: purchases_products
+
+-- colunas da tabela:
+
+-- purchase_id (TEXT e obrigatório, não deve ser único)
+
+-- product_id (TEXT e obrigatório, não deve ser único)
+
+-- quantity (INTEGER e obrigatório, não deve ser único)
+
+CREATE TABLE
+    purchases_products (
+        purchase_id TEXT NOT NULL,
+        product_id TEXT NOT NULL,
+        quantity INTEGER NOT NULL,
+        FOREIGN KEY (purchase_id) REFERENCES purchases(id),
+        FOREIGN KEY (product_id) REFERENCES products(id)
+    );
+
+-- Inserção dos dados
+
+-- Popule sua tabela purchases_products simulando 3 compras de clientes.
+
+INSERT INTO
+    purchases_products (
+        purchase_id,
+        product_id,
+        quantity
+    )
+VALUES ("3001", "2004", 2), ("3001", "2002", 1), ("3002", "2002", 2), ("3003", "2001", 5), ("3004", "2001", 5), ("3005", "2004", 1), ("3005", "2005", 1), ("3006", "2004", 1);
+
+-- Consulta com junção INNER JOIN
+
+-- Mostre em uma query todas as colunas das tabelas relacionadas (purchases_products, purchases e products).
+
+SELECT * FROM purchases_products ;
+
+SELECT
+    purchases_products.purchase_id AS purchaseId,
+    purchases_products.product_id AS productId,
+    products.name,
+    products.price,
+    purchases_products.quantity,
+    purchases.total_price,
+    purchases.buyer_id AS buyerId
+FROM purchases_products
+    INNER JOIN products ON products.id = productId
+    INNER JOIN purchases ON purchases.id = purchaseId;
